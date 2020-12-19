@@ -3,8 +3,28 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def parse_purchase_short(urls):
-    return 1
+"""def parse_purchase_short(urls):
+    content_title_list = []
+    content_info_list = []
+    jsonfile = {'list': []}
+    for num, url_x in enumerate(urls, 0):
+        provider_data = requests.get(url_x, allow_redirects=True)
+        soup2 = BeautifulSoup(provider_data.text, 'lxml')
+        containers = soup2.find_all("div", {'class': 'noticeTabBoxWrapper'})
+        for j in containers:
+            content_title = j.find(class_='section__title')
+            content_info = j.find(class_='section__info')
+            if (content_title and content_info) is not None:
+                content_title_list.append(content_title.text.strip())
+                content_info_list.append(content_info.text.strip())
+        json1block = {}
+        for i in range(len(content_info_list)):
+            json1block[content_title_list[i]] = content_info_list[i]
+        jsonfile['list'].append(json1block)
+        if not (jsonfile == {} or jsonfile == ''):
+            with open('purchases' + '.json', 'w', encoding='utf-8') as write_file:
+                json.dump(jsonfile, write_file, indent=4, ensure_ascii=False)
+        print('---------------------------------------------------------------')"""
 
 
 def parse_purchase_long(urls):
@@ -53,3 +73,4 @@ urlS = []
 urlL = []
 parse_purchase_links()
 parse_purchase_long(urlL)
+# parse_purchase_short(urlS)
