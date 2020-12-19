@@ -1,7 +1,7 @@
 import json
 import requests
 from bs4 import BeautifulSoup
-
+from database.app.uof import ProviderBuilder
 
 def parse_provider_links():
     req = requests.get('https://zakupki.gov.ru/epz/eruz/search/results.html')
@@ -30,9 +30,12 @@ def parse_provider_links():
             json1block[content_title_list[i]] = content_info_list[i]
         jsonfile['list'].append(json1block)
         if not (jsonfile == {} or jsonfile == ''):
-            with open('C:\\Users\\Georgy\\Desktop\\' + 'hello' + '.json', 'w', encoding='utf-8') as write_file:
+            with open('C:\\temp' + 'hello' + '.json', 'w', encoding='utf-8') as write_file:
                 json.dump(jsonfile, write_file, indent=4, ensure_ascii=False)
         print('---------------------------------------------------------------')
 
+
+""" Пример использования """
+# ProviderBuilder.build(dictionary_list=)
 
 parse_provider_links()
