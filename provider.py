@@ -1,6 +1,12 @@
 import json
 from pip._vendor import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+import csv
+chromedriver = 'chromedriver.exe'
+options = webdriver.ChromeOptions()
+options.add_argument('headless')  # для открытия headless-браузера
+browser = webdriver.Chrome(executable_path=chromedriver, chrome_options=options)
 
 
 def parse_provider_links():
