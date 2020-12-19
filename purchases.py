@@ -1,26 +1,17 @@
-from bs4 import BeautifulSoup
-from pip._vendor import requests
 import json
+import requests
+from bs4 import BeautifulSoup
 
 
-def plan():
-    req = requests.get("https://zakupki.gov.ru/epz/orderplan/search/results.html?morphology=on&search-filter=%D0%94%D0%B0%D1%82%D0%B5+%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F&structured=true&fz44=on&customerPlaceWithNested=on&actualPeriodRangeYearFrom=2020&sortBy=BY_MODIFY_DATE&pageNumber=1&sortDirection=false&recordsPerPage=_10&searchType=false%22")
-    soup = BeautifulSoup(req.text, 'lxml')
-    burls = []
-    for a in soup.find_all('a', href=True):
-        if 'plan-number' in a['href'] and 'journal-events' not in a['href']:
-            burls.append(a.text.strip())
-    urls = []
-    for b in burls:
-        if '№' in b:
-            urls.append('https://zakupki.gov.ru/epz/orderplan/pg2020/general-info.html?plan-number=' + b[2:])
-    print(urls)
+def parse_purchase_short(urls):
+    return 1
+
+
+def parse_purchase_long(urls):
     content_title_list = []
     content_info_list = []
     jsonfile = {'list': []}
     for num, url_x in enumerate(urls, 0):
-        print(num)
-        print(url_x)
         provider_data = requests.get(url_x, allow_redirects=True)
         soup2 = BeautifulSoup(provider_data.text, 'lxml')
         containers = soup2.find_all("section")
@@ -40,4 +31,25 @@ def plan():
         print('---------------------------------------------------------------')
 
 
-plan()
+def parse_purchase_links():
+    req = requests.get('https://zakupki.gov.ru/epz/order/extendedsearch/results.html')
+    soup = BeautifulSoup(req.text, 'lxml')
+    burls = []
+    for a in soup.find_all('a', href=True):
+        if 'regNumber' in a['href'] and 'journal-events' not in a['href'] and a.text not in burls:
+            burls.append(a.text.strip())
+    url_starter_short = 'https://zakupki.gov.ru/223/purchase/public/purchase/info/common-info.html?regNumber='
+    url_starter_long = 'https://zakupki.gov.ru/epz/order/notice/ea44/view/common-info.html?regNumber='
+    for url in burls:
+        if '№' in url:
+            if len(url[2:]) < 12:
+                urlS.append(url_starter_short + url[2:])
+            else:
+                urlL.append(url_starter_long + url[2:])
+                print(url_starter_long + url[2:])
+
+
+urlS = []
+urlL = []
+parse_purchase_links()
+parse_purchase_long(urlL)
