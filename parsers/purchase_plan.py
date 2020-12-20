@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 from pip._vendor import requests
 import json
+from database.app.models import Person, Order, Customer
+from database.app import db
 
 
 def plan():
@@ -38,6 +40,21 @@ def plan():
             with open('purchase_plan' + '.json', 'w', encoding='utf-8') as write_file:
                 json.dump(jsonfile, write_file, indent=4, ensure_ascii=False)
         print('---------------------------------------------------------------')
+    for data in jsonfile['list']:
+        data['ИНН'] = data['ИНН/КПП'].split('/')[0]
+        data['КПП'] = data['ИНН/КПП'].split('/')[1]
+        person = Person()
+        person.from_dict(data)
+        order = Order()
+        order.from_dict(data)
+        customer = Customer()
+        customer.from_dict(data)
+        customer.person_id = person.person_id
+        order.customer_id = customer.customer_id
+        db.session.add(person)
+        db.session.add(customer)
+        db.session.add(order)
+        db.session.commit()
 
 
 plan()

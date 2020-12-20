@@ -1,6 +1,8 @@
 import json
 import requests
 from bs4 import BeautifulSoup
+from database.app.models import Purchase, Commitment
+from database.app import db
 
 
 """def parse_purchase_short(urls):
@@ -50,6 +52,14 @@ def parse_purchase_long(urls):
             with open('purchases' + '.json', 'w', encoding='utf-8') as write_file:
                 json.dump(jsonfile, write_file, indent=4, ensure_ascii=False)
         print('---------------------------------------------------------------')
+    for data in jsonfile['list']:
+        purchase = Purchase()
+        commitment = Commitment()
+        purchase.from_dict(data)
+        commitment.from_dict(data)
+        db.session.add(commitment)
+        db.session.add(purchase)
+        db.session.commit()
 
 
 def parse_purchase_links():

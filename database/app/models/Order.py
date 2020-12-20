@@ -27,7 +27,7 @@ class Order(db.Model):
     status = db.Column(db.String, default='', nullable=True)
 
     "Заказчик"
-    customer_id = db.Column(db.Integer, db.ForeignKey('customers.customer_id'), default=0,  nullable=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.customer_id'), default=None,  nullable=True)
 
     fields = {
         'unique_number': "Уникальный номер плана-графика закупок",

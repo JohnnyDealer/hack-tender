@@ -26,7 +26,7 @@ class Customer(db.Model):
     "Публично-правовое образование"
     place = db.Column(db.String, default='', nullable=True)
 
-    person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id'), default=0,  nullable=True)
+    person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id'), default=None,  nullable=True)
 
     orders = db.relationship('Order', backref='customer', lazy='dynamic')
 

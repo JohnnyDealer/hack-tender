@@ -20,10 +20,13 @@ class Purchase(db.Model):
     "Сведения о связи с позицией плана-графика"
     plan_info = db.Column(db.String, default='', nullable=True)
 
-    commitment_id = db.Column(db.Integer, db.ForeignKey('commitments.commitment_id'), default=0,  nullable=True)
+    commitment_id = db.Column(db.Integer, db.ForeignKey('commitments.commitment_id'), default=None,  nullable=True)
 
     fields = {
-
+        'contract_amount': "Начальная (максимальная) цена контракта",
+        'currency': "Валюта",
+        'finance': "Источник финансирования",
+        'plan_info':  "Сведения о связи с позицией плана-графика"
     }
 
     def from_dict(self, data):
