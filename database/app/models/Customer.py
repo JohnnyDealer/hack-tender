@@ -7,11 +7,46 @@ class Customer(db.Model):
     __tablename__ = 'customers'
 
     customer_id = db.Column(db.Integer, primary_key=True)
-    FZ = db.Column(db.String, nullable=False)
-    win_date = db.Column(db.Date, default=datetime.utcnow, nullable=True)
-    notice_number = db.Column(db.Integer, default=0, nullable=True)
-    contract_term = db.Column(db.String(32), default='128', nullable=True)
-    link = db.Column(db.String, nullable=True)
-    protocol_date = db.Column(db.Date, default=datetime.utcnow, nullable=True)
-    contract_finish_term = db.Column(db.String(32), default='128', nullable=True)
-    prepay_amount = db.Column(db.Integer, default=0, nulable=True)
+
+    "Наименование Заказчика"
+    name = db.Column(db.String, default='', nullable=True)
+
+    "ИНН"
+    INN = db.Column(db.String, default='', nullable=True)
+
+    "КПП"
+    KPP = db.Column(db.String, default='', nullable=True)
+
+    "ОКОПФ"
+    OKOPF = db.Column(db.String, default='', nullable=True)
+
+    "ОКТМО"
+    OKTMO = db.Column(db.String, default='', nullable=True)
+
+    "Публично-правовое образование"
+    place = db.Column(db.String, default='', nullable=True)
+
+    person_id = db.Column(db.Integer, db.ForeignKey('persons.person_id'), default=0,  nullable=True)
+
+    orders = db.relationship('Order', backref='customer', lazy='dynamic')
+
+    fields = {
+        'name': "Наименование Заказчика",
+        'INN': "ИНН",
+        'KPP': "КПП",
+        'OKOPF': "ОКОПФ",
+        'OKTMO': "ОКТМО",
+        'place': "Публично-правовое образование",
+    }
+
+    def from_dict(self, data):
+        # Проверка на тип 'словарь'
+        if type(data) != dict:
+            raise Exception('no dictionaries provided')
+
+        for field in self.fields:
+            if self.fields[field] in data:
+                setattr(self, field, data[self.fields[field]])
+
+    def __repr__(self):
+        return "<Provider № {}>".format(self.provider_id)
