@@ -4,14 +4,13 @@ from bs4 import BeautifulSoup
 from database.app.uof import ProviderBuilder
 
 def parse_provider_links():
-    req = requests.get('https://zakupki.gov.ru/epz/eruz/search/results.html')
+    req = requests.get('https://zakupki.gov.ru/epz/contract/search/results.html')
     soup = BeautifulSoup(req.text, 'lxml')
     url = []
     for a in soup.find_all('a', href=True):
         if 'reestrNumber' in a['href'] and 'journal-events' not in a['href'] and a['href'] not in url:
             url.append(a['href'])
-            print(a['href'])
-    url_starter = 'https://zakupki.gov.ru'
+    url_starter = 'https://zakupki.gov.ru/epz/contract/contractCard/common-info.html?reestrNumber='
     content_title_list = []
     content_info_list = []
     jsonfile = {'list': []}
